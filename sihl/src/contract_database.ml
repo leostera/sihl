@@ -107,7 +107,7 @@ module type Sig = sig
   val fetch_pool
     :  ?ctx:(string * string) list
     -> unit
-    -> (Caqti_lwt.connection, Caqti_error.t) Caqti_lwt_unix.Pool.t
+    -> (Caqti_lwt.connection, Caqti_error.t) Caqti_lwt.Pool.t
 
   (** [add_pool ~pool_size name database_url] creates a connection pool with a
       unique [name]. Creation fails if a pool with the same name was already

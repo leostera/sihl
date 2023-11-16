@@ -5,15 +5,13 @@ let log_src = Logs.Src.create "sihl.service.database"
 module Logs = (val Logs.src_log log_src : Logs.LOG)
 
 let main_pool_ref
-  : (Caqti_lwt.connection, Caqti_error.t) Caqti_lwt_unix.Pool.t option ref
+  : (Caqti_lwt.connection, Caqti_error.t) Caqti_lwt.Pool.t option ref
   =
   ref None
 ;;
 
 let pools
-  : ( string
-      , (Caqti_lwt.connection, Caqti_error.t) Caqti_lwt_unix.Pool.t )
-      Hashtbl.t
+  : (string, (Caqti_lwt.connection, Caqti_error.t) Caqti_lwt.Pool.t) Hashtbl.t
   =
   Hashtbl.create 100
 ;;
@@ -42,9 +40,9 @@ let prepare_search_request
   : 'a prepared_search_request
   =
   let open Caqti_request.Infix in
-  let output_type = Caqti_type.(t2 int output_type) in
+  let output_type = Caqti_type.(tup2 int output_type) in
   let asc_request =
-    let input_type = Caqti_type.(t2 int int) in
+    let input_type = Caqti_type.(tup2 int int) in
     let query =
       Printf.sprintf
         "%s ORDER BY %s ASC %s"
@@ -55,7 +53,7 @@ let prepare_search_request
     query |> input_type ->* output_type
   in
   let desc_request =
-    let input_type = Caqti_type.(t2 int int) in
+    let input_type = Caqti_type.(tup2 int int) in
     let query =
       Printf.sprintf
         "%s ORDER BY %s DESC %s"
@@ -66,7 +64,7 @@ let prepare_search_request
     query |> input_type ->* output_type
   in
   let filter_asc_request =
-    let input_type = Caqti_type.(t3 string int int) in
+    let input_type = Caqti_type.(tup3 string int int) in
     let query =
       Printf.sprintf
         "%s %s ORDER BY %s ASC %s"
@@ -78,7 +76,7 @@ let prepare_search_request
     query |> input_type ->* output_type
   in
   let filter_desc_request =
-    let input_type = Caqti_type.(t3 string int int) in
+    let input_type = Caqti_type.(tup3 string int int) in
     let query =
       Printf.sprintf
         "%s %s ORDER BY %s DESC %s"
@@ -144,7 +142,7 @@ let schema =
 ;;
 
 let print_pool_usage pool =
-  let n_connections = Caqti_lwt_unix.Pool.size pool in
+  let n_connections = Caqti_lwt.Pool.size pool in
   let max_connections =
     Option.value (Core_configuration.read schema).pool_size ~default:10
   in
@@ -181,8 +179,7 @@ let fetch_pool ?(ctx = []) () =
     Logs.info (fun m -> m "Create pool with size %i" pool_size);
     (Core_configuration.read schema).url
     |> Uri.of_string
-    |> Caqti_lwt_unix.connect_pool
-         ~pool_config:(Caqti_pool_config.create ~max_size:pool_size ())
+    |> Caqti_lwt.connect_pool ~max_size:pool_size
     |> (function
      | Ok pool ->
        main_pool_ref := Some pool;
@@ -196,8 +193,7 @@ let fetch_pool ?(ctx = []) () =
 let add_pool ?(pool_size = 10) name database_url =
   database_url
   |> Uri.of_string
-  |> Caqti_lwt_unix.connect_pool
-       ~pool_config:(Caqti_pool_config.create ~max_size:pool_size ())
+  |> Caqti_lwt.connect_pool ~max_size:pool_size
   |> function
   | Ok pool ->
     if Option.is_some (Hashtbl.find_opt pools name)
@@ -220,7 +216,7 @@ let drop_pool name =
     Logs.warn (fun m -> m "Connection pool with name '%s' doesn't exist" name);
     Lwt.return_unit
   | Some connection ->
-    let%lwt () = Caqti_lwt_unix.Pool.drain connection in
+    let%lwt () = Caqti_lwt.Pool.drain connection in
     let () = Hashtbl.remove pools name in
     Lwt.return_unit
 ;;
@@ -235,7 +231,7 @@ let transaction ?ctx f =
   let pool = fetch_pool ?ctx () in
   print_pool_usage pool;
   let%lwt result =
-    Caqti_lwt_unix.Pool.use
+    Caqti_lwt.Pool.use
       (fun connection ->
         Logs.debug (fun m -> m "Fetched connection from pool");
         let (module Connection : Caqti_lwt.CONNECTION) = connection in
@@ -322,7 +318,7 @@ let query ?ctx f =
   let pool = fetch_pool ?ctx () in
   print_pool_usage pool;
   let%lwt result =
-    Caqti_lwt_unix.Pool.use
+    Caqti_lwt.Pool.use
       (fun connection -> f connection |> Lwt.map Result.ok)
       pool
   in

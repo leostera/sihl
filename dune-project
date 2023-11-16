@@ -59,9 +59,9 @@
   (lwt_ppx
    (>= 2.0.1))
   (caqti
-   (>= 2.0.1))
+   (>= 1.9.0))
   (caqti-lwt
-   (>= 2.0.1))
+   (>= 1.9.0))
   (safepass
    (>= 3.0))
   (jwto
@@ -92,11 +92,11 @@
    (>= 1.1.6))
   (caqti-driver-postgresql
    (and
-    (>= 2.0.1)
+    (>= 1.9.0)
     :with-test))
   (caqti-driver-mariadb
    (and
-    (>= 2.0.1)
+    (>= 1.9.0)
     :with-test))))
 
 (package
@@ -122,11 +122,11 @@
    (>= 1.1.6))
   (caqti-driver-postgresql
    (and
-    (>= 2.0.1)
+    (>= 1.9.0)
     :with-test))
   (caqti-driver-mariadb
    (and
-    (>= 2.0.1)
+    (>= 1.9.0)
     :with-test))))
 
 (package
@@ -147,11 +147,11 @@
    (>= 1.1.6))
   (caqti-driver-postgresql
    (and
-    (>= 2.0.1)
+    (>= 1.9.0)
     :with-test))
   (caqti-driver-mariadb
    (and
-    (>= 2.0.1)
+    (>= 1.9.0)
     :with-test))))
 
 (package
@@ -173,11 +173,11 @@
    (>= 1.1.6))
   (caqti-driver-postgresql
    (and
-    (>= 2.0.1)
+    (>= 1.9.0)
     :with-test))
   (caqti-driver-mariadb
    (and
-    (>= 2.0.1)
+    (>= 1.9.0)
     :with-test))))
 
 (package
@@ -199,11 +199,11 @@
    (>= 1.1.6))
   (caqti-driver-postgresql
    (and
-    (>= 2.0.1)
+    (>= 1.9.0)
     :with-test))
   (caqti-driver-mariadb
    (and
-    (>= 2.0.1)
+    (>= 1.9.0)
     :with-test))))
 
 (package
@@ -228,11 +228,11 @@
    (>= 1.1.6))
   (caqti-driver-postgresql
    (and
-    (>= 2.0.1)
+    (>= 1.9.0)
     :with-test))
   (caqti-driver-mariadb
    (and
-    (>= 2.0.1)
+    (>= 1.9.0)
     :with-test))))
 
 (package
@@ -256,9 +256,9 @@
    (>= 1.1.6))
   (caqti-driver-postgresql
    (and
-    (>= 2.0.1)
+    (>= 1.9.0)
     :with-test))
   (caqti-driver-mariadb
    (and
-    (>= 2.0.1)
+    (>= 1.9.0)
     :with-test))))

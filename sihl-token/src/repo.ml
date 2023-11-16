@@ -53,7 +53,9 @@ module Model = struct
       custom
         ~encode
         ~decode
-        (t2 string (t2 string (t2 string (t2 string (t2 ptime ptime))))))
+        (tup2
+           string
+           (tup2 string (tup2 string (tup2 string (tup2 ptime ptime))))))
   ;;
 end
 

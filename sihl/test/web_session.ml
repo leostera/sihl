@@ -167,7 +167,7 @@ let fetch_all_kv_pairs _ () =
 let update_value _ () =
   let open Sihl.Web in
   let target1 = "baz", "qux" in
-  let target2 = "waldo", "grault" in
+  let targetup2 = "waldo", "grault" in
   let con = "able" in
   let session = [ "foo", "bar"; target1; "foo", "quux" ] in
   let req = Request.get "" in
@@ -181,9 +181,9 @@ let update_value _ () =
            | Some v -> Some (con ^ v))
          req
     |> Session.update_or_set_value
-         ~key:(fst target2)
+         ~key:(fst targetup2)
          (function
-           | None -> Some (snd target2)
+           | None -> Some (snd targetup2)
            | Some _ -> Alcotest.fail "value should not be found")
          req
     |> Lwt.return
@@ -195,7 +195,7 @@ let update_value _ () =
       "values updated in session"
       [ CCPair.map_snd (( ^ ) con) target1
       ; CCList.last_opt session |> Option.get
-      ; target2
+      ; targetup2
       ]
       (Sihl.Test.Session.get_all_resp response |> Option.get));
   Lwt.return ()
@@ -204,7 +204,7 @@ let update_value _ () =
 let delete_value _ () =
   let open Sihl.Web in
   let target1 = "baz", "qux" in
-  let target2 = "waldo", "grault" in
+  let targetup2 = "waldo", "grault" in
   let session = [ "foo", "bar"; target1; "foo", "quux" ] in
   let req = Request.get "" in
   let handler _ =
@@ -217,7 +217,7 @@ let delete_value _ () =
            | Some _ -> None)
          req
     |> Session.update_or_set_value
-         ~key:(fst target2)
+         ~key:(fst targetup2)
          (function
            | None -> None
            | Some _ -> Alcotest.fail "value should not be found")
@@ -237,7 +237,7 @@ let delete_value _ () =
 let set_value _ () =
   let open Sihl.Web in
   let target1 = "baz", "qux" in
-  let target2 = "waldo" in
+  let targetup2 = "waldo" in
   let updated = "grault" in
   let session = [ "foo", "bar"; target1; "foo", "quux" ] in
   let req = Request.get "" in
@@ -245,7 +245,7 @@ let set_value _ () =
     Response.of_plain_text ""
     |> Session.set session
     |> Session.set_value ~key:(fst target1) updated req
-    |> Session.set_value ~key:target2 updated req
+    |> Session.set_value ~key:targetup2 updated req
     |> Lwt.return
   in
   let%lwt response = handler req in
@@ -255,7 +255,7 @@ let set_value _ () =
       "values set in session"
       [ CCPair.map_snd (CCFun.const updated) target1
       ; CCList.last_opt session |> Option.get
-      ; target2, updated
+      ; targetup2, updated
       ]
       (Sihl.Test.Session.get_all_resp response |> Option.get));
   Lwt.return ()

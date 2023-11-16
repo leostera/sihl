@@ -75,25 +75,25 @@ let job =
     custom
       ~encode
       ~decode
-      (t2
+      (tup2
          string
-         (t2
+         (tup2
             string
-            (t2
+            (tup2
                string
-               (t2
+               (tup2
                   int
-                  (t2
+                  (tup2
                      ptime
-                     (t2
+                     (tup2
                         int
-                        (t2
+                        (tup2
                            status
-                           (t2
+                           (tup2
                               (option string)
-                              (t2
+                              (tup2
                                  (option ptime)
-                                 (t2 (option string) (option ctx))))))))))))
+                                 (tup2 (option string) (option ctx))))))))))))
 ;;
 
 module MakeMariaDb (MigrationService : Sihl.Contract.Migration.Sig) = struct

@@ -3,8 +3,8 @@ let template =
 open Lwt.Syntax
 
 let testable_{{name}} =
-  Alcotest.testable {{module}}.pp (fun t1 t2 ->
-      String.equal t1.{{module}}.id t2.{{module}}.id)
+  Alcotest.testable {{module}}.pp (fun t1 tup2 ->
+      String.equal t1.{{module}}.id tup2.{{module}}.id)
 ;;
 
 let create _ () =

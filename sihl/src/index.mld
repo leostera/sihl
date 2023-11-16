@@ -663,14 +663,14 @@ If you need to run multiple caqti requests on the same connection, use {!val:Sih
 
 {[
 let request1 = (* ... *)
-let request2 = (* ... *)
+let requestup2 = (* ... *)
 ;;
 
 let find key =
   Sihl.Database.query (fun (module Connection : Caqti_lwt.CONNECTION) ->
       let%lwt result1 = Connection.find_opt request1 key |> Lwt.map Sihl.Database.raise_error in
-      let%lwt result2 = Connection.find_opt request2 key |> Lwt.map Sihl.Database.raise_error
-      Lwt.return (result1, result2))
+      let%lwt resultup2 = Connection.find_opt requestup2 key |> Lwt.map Sihl.Database.raise_error
+      Lwt.return (result1, resultup2))
 ]}
 
 {3 Context}
@@ -735,15 +735,15 @@ let create_list_and_do _ () =
   let%lwt _ = Todo.create "do laundry" in
   let%lwt _ = Todo.create "hoover" in
   let%lwt todos = Todo.search 10 in
-  let t1, t2 =
+  let t1, tup2 =
     match todos with
-    | [ t1; t2 ], n ->
+    | [ t1; tup2 ], n ->
       Alcotest.(check int "has 2" 2 n);
-      t1, t2
+      t1, tup2
     | _ -> Alcotest.fail "Unexpected number of todos received"
   in
   Alcotest.(check string "has description" "hoover" t1.description);
-  Alcotest.(check string "has description" "do laundry" t2.description);
+  Alcotest.(check string "has description" "do laundry" tup2.description);
   let%lwt () = Todo.do_ t1 in
   let%lwt t1 = Todo.find t1.id in
   Alcotest.(check bool "is done" true (Todo.is_done t1));

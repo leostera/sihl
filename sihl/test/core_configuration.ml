@@ -164,7 +164,7 @@ end = struct
   ;;
 end
 
-module Test2 : sig
+module Testup2 : sig
   val require_fails : 'a -> unit -> unit Lwt.t
 end = struct
   type t = { ho : int }
@@ -200,7 +200,7 @@ let suite =
             read_env_file_non_existing
         ; test_case "read env file" `Quick read_env_file
         ; test_case "require succeeds" `Quick Test1.require_succeeds
-        ; test_case "require fails" `Quick Test2.require_fails
+        ; test_case "require fails" `Quick Testup2.require_fails
         ] )
     ]
 ;;

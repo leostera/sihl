@@ -41,13 +41,13 @@ let template =
     custom
       ~encode
       ~decode
-      (t2
+      (tup2
          string
-         (t2
+         (tup2
             string
-            (t2
+            (tup2
                (option string)
-               (t2 string (t2 (option string) (t2 ptime ptime)))))))
+               (tup2 string (tup2 (option string) (tup2 ptime ptime)))))))
 ;;
 
 module MakeMariaDb (MigrationService : Sihl.Contract.Migration.Sig) : Sig =
@@ -121,7 +121,7 @@ struct
           ?ctx
           (get_by_label_request
              ~with_language:true
-             Caqti_type.(t2 string string))
+             Caqti_type.(tup2 string string))
           (label, language)
     ;;
 
@@ -341,7 +341,7 @@ struct
           ?ctx
           (get_by_label_request
              ~with_language:true
-             Caqti_type.(t2 string string))
+             Caqti_type.(tup2 string string))
           (label, language)
     ;;
 
